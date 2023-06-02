@@ -17,6 +17,18 @@ const BluetoothAudioManager = NativeModules.BluetoothAudioManager
       }
     );
 
-export function multiply(a: number, b: number): Promise<number> {
-  return BluetoothAudioManager.multiply(a, b);
+export interface Device {
+  name: string;
+  address: string;
+}
+export function getDevices(): Promise<Device[]> {
+  return BluetoothAudioManager.getDevices();
+}
+
+export function connectDevice(address: string): Promise<void> {
+  return BluetoothAudioManager.connectDevice(address);
+}
+
+export function lockOutputDevice(address: string): Promise<void> {
+  return BluetoothAudioManager.lockOutputDevice(address);
 }

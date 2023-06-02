@@ -1,18 +1,34 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'react-native-bluetooth-audio-manager';
+import { useEffect, useState } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Device,
+  getDevices,
+  lockOutputDevice,
+} from 'react-native-bluetooth-audio-manager';
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
-
-  React.useEffect(() => {
-    multiply(3, 7).then(setResult);
+  const [list, setList] = useState<Device[]>([]);
+  useEffect(() => {
+    getDevices().then((res) => {
+      console.log(res);
+      setList(res);
+    });
   }, []);
-
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      {list.map((item) => (
+        <TouchableOpacity
+          key={item.address}
+          style={styles.item}
+          onPress={() => {
+            lockOutputDevice(item.address);
+          }}
+        >
+          <Text>{item.name}</Text>
+        </TouchableOpacity>
+      ))}
     </View>
   );
 }
@@ -20,12 +36,9 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
-  box: {
-    width: 60,
+  item: {
     height: 60,
-    marginVertical: 20,
+    justifyContent: 'center',
   },
 });
