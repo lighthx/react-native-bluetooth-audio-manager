@@ -32,3 +32,6 @@ export function connectDevice(address: string): Promise<void> {
 export function lockOutputDevice(address: string): Promise<void> {
   return BluetoothAudioManager.lockOutputDevice(address);
 }
+export function unlockOutputDevice(address: string): Promise<void> {
+  return BluetoothAudioManager.unlockOutputDevice(address);
+}
